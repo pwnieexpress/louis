@@ -1,5 +1,7 @@
 # Louis
 
+[![Gem Version](https://badge.fury.io/rb/louis.svg)](http://badge.fury.io/rb/louis)
+
 There is a public registry maintained by the IANA that is required to be used
 by all vendors operating in certains spaces. Ethernet, Bluetooth, and Wireless
 device manufacturers are all assigned unique prefixes. This database is
