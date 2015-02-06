@@ -1,6 +1,8 @@
 # Louis
 
 [![Gem Version](https://badge.fury.io/rb/louis.svg)](http://badge.fury.io/rb/louis)
+[![Build Status](https://travis-ci.org/pwnieexpress/louis.svg?branch=master)](https://travis-ci.org/pwnieexpress/louis)
+[![Coverage Status](https://coveralls.io/repos/pwnieexpress/louis/badge.svg?branch=master)](https://coveralls.io/r/pwnieexpress/louis?branch=master)
 
 There is a public registry maintained by the IANA that is required to be used
 by all vendors operating in certains spaces. Ethernet, Bluetooth, and Wireless
