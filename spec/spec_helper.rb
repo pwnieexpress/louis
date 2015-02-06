@@ -3,8 +3,13 @@ $LOAD_PATH.unshift(base_path) unless $LOAD_PATH.include?(base_path)
 
 require 'rspec'
 require 'simplecov'
+require 'coveralls'
 
-SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
+
 SimpleCov.add_filter "/spec/"
 SimpleCov.add_filter do |source_file|
   source_file.lines.count < 3
