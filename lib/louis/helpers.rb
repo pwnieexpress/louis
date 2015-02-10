@@ -26,7 +26,8 @@ module Louis
     #
     # @param [String] mac
     def mac_to_num(mac)
-      clean_mac(mac).ljust(12, '0').to_i(16)
+      val = clean_mac(mac).ljust(12, '0').to_i(16)
+      (0xfdffffffffff & val) # Ignore the locally administered address bit
     end
 
     # Handle parsing a line from the raw OUI file into it's associated lookup
