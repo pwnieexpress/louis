@@ -1,27 +1,9 @@
 require 'louis/const'
+require 'louis/helpers'
 require 'louis/version'
 
 module Louis
-  # Calculate the bit mask for testing whether or not a mac_prefix matches.
-  # This returns an integer with the upper X bits set where X is the mask
-  # length.
-  #
-  # @param [String] prefix
-  # @param [String] mask
-  # @return [Fixnum]
-  def self.calculate_mask(prefix, mask)
-    mask_base = mask.nil? ? (clean_mac(prefix).length * 4) : mask.to_i
-    (2 ** 48 - 1) - (2 ** (48 - mask_base) - 1)
-  end
-
-  # Returns the hex representing a full or partial MAC address with the
-  # 'connecting' characters removed. Does nothing to ensure length.
-  #
-  # @param [String] mac
-  # @return [String]
-  def self.clean_mac(mac)
-    mac.gsub(/[:-]/, '')
-  end
+  extend Helpers
 
   # Search through the OUI lookup table and return all the entries in the
   # lookup table that match the provided MAC.
@@ -39,16 +21,8 @@ module Louis
     return unless @lookup_table.empty?
 
     File.open(ORIGINAL_OUI_FILE).each_line do |line|
-      if (matches = OUI_FORMAT_REGEX.match(line))
-        result = Hash[matches.names.zip(matches.captures)]
-
-        @lookup_table.push({
-          'mask'         => calculate_mask(result['prefix'], result['mask']),
-          'prefix'       => mac_to_num(result['prefix']),
-          'short_vendor' => result['short_vendor'],
-          'long_vendor'  => result['long_vendor']
-        })
-      end
+      res = line_parser(line)
+      @lookup_table.push(res) if res
     end
   end
 
@@ -74,13 +48,5 @@ module Louis
   # @return [Boolean]
   def self.mac_matches_prefix?(mac, prefix, mask)
     (mac_to_num(mac) & mask) == prefix
-  end
-
-  # Converts a hexidecimal version of a full or partial (prefix) MAC address
-  # into it's integer representation.
-  #
-  # @param [String] mac
-  def self.mac_to_num(mac)
-    clean_mac(mac).ljust(12, '0').to_i(16)
   end
 end
