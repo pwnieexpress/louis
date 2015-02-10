@@ -26,6 +26,7 @@ RSpec.describe Louis do
   describe '#lookup' do
     let(:base_mac) { '00:12:34:00:00:00' }
     let(:partial_mac) { '3c:97:0e' }
+    let(:unknown_mac) { 'c5:00:00:00:00:00' }
 
     it 'should return a hash' do
       expect(Louis.lookup(base_mac)).to be_a(Hash)
@@ -41,6 +42,22 @@ RSpec.describe Louis do
 
     it 'should be able to identify the long vendor of a full MAC' do
       expect(Louis.lookup(base_mac)['long_vendor']).to eq('Camille Bauer')
+    end
+
+    it 'should be able to identify the short vendor of a partial MAC' do
+      expect(Louis.lookup(partial_mac)['short_vendor']).to eq('WistronI')
+    end
+
+    it 'should be able to identify the long vendor of a patrial MAC' do
+      expect(Louis.lookup(partial_mac)['long_vendor']).to eq('Wistron InfoComm(Kunshan)Co.,Ltd.')
+    end
+
+    it 'should return "Unknown" as the short vendor string for unknown MAC prefixes' do
+      expect(Louis.lookup(unknown_mac)['short_vendor']).to eq('Unknown')
+    end
+
+    it 'should return "Unknown" as the long vendor string for unknown MAC prefixes' do
+      expect(Louis.lookup(unknown_mac)['long_vendor']).to eq('Unknown')
     end
   end
 end
