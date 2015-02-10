@@ -4,7 +4,6 @@
 [![Build Status](https://travis-ci.org/pwnieexpress/louis.svg?branch=master)](https://travis-ci.org/pwnieexpress/louis)
 [![Coverage Status](https://coveralls.io/repos/pwnieexpress/louis/badge.svg?branch=master)](https://coveralls.io/r/pwnieexpress/louis?branch=master)
 [![Dependency Status](https://gemnasium.com/pwnieexpress/louis.svg)](https://gemnasium.com/pwnieexpress/louis)
-[![Security](https://hakiri.io/github/pwnieexpress/louis/master.svg)](https://hakiri.io/github/pwnieexpress/louis/master)
 [![Code Climate](https://codeclimate.com/github/pwnieexpress/louis/badges/gpa.svg)](https://codeclimate.com/github/pwnieexpress/louis)
 
 There is a public registry maintained by the IANA that is required to be used
