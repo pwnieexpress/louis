@@ -1,11 +1,7 @@
-require "louis/version"
+require 'louis/const'
+require 'louis/version'
 
 module Louis
-  OUI_FILE = File.expand_path(File.join(File.dirname(__FILE__), '..', 'data',
-    'mac_oui_manuf.txt'))
-
-  OUI_FORMAT_REGEX = /^(?<prefix>[0-9a-fA-F:\-]+)(\/(?<mask>(\d+)))?\s+(?<short_vendor>\S+)(\s+# (?<long_vendor>.+))?$/
-
   # Calculate the bit mask for testing whether or not a mac_prefix matches.
   # This returns an integer with the upper X bits set where X is the mask
   # length.
@@ -42,7 +38,7 @@ module Louis
     return if @lookup_table
     @lookup_table = []
 
-    File.open(OUI_FILE).each_line do |line|
+    File.open(ORIGINAL_OUI_FILE).each_line do |line|
       if (matches = OUI_FORMAT_REGEX.match(line))
         result = Hash[matches.names.zip(matches.captures)]
 

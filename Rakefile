@@ -8,6 +8,9 @@ rescue LoadError
   # no rspec available
 end
 
+task :parse_data_file => [:environment] do
+end
+
 task :environment do
   base_path = File.expand_path(File.join(File.dirname(__FILE__), 'lib'))
   $LOAD_PATH.unshift(base_path) unless $LOAD_PATH.include?(base_path)
