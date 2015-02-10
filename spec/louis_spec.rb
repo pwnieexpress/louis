@@ -9,7 +9,7 @@ RSpec.describe Louis do
     expect(File.readable?(Louis::ORIGINAL_OUI_FILE)).to be(true)
   end
 
-  describe 'Format RegEx' do
+  describe 'Original OUI format regex' do
     subject { Louis::OUI_FORMAT_REGEX }
 
     it "should ignore comment lines" do

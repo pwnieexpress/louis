@@ -35,8 +35,8 @@ module Louis
   # Loads the lookup table, parsing out the uncommented non-blank lines into
   # objects we can compare MACs against to find their vendor.
   def self.load_lookup_table
-    return if @lookup_table
-    @lookup_table = []
+    @lookup_table ||= []
+    return unless @lookup_table.empty?
 
     File.open(ORIGINAL_OUI_FILE).each_line do |line|
       if (matches = OUI_FORMAT_REGEX.match(line))
