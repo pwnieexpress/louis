@@ -8,7 +8,18 @@ rescue LoadError
   # no rspec available
 end
 
+desc "Pre-parse the source file into the parsed file"
 task :parse_data_file => [:environment] do
+  include Louis::Helpers
+
+  lookup_table = []
+
+  File.open(Louis::ORIGINAL_OUI_FILE).each_line do |line|
+    res = line_parser(line)
+    lookup_table.push(res) if res
+  end
+
+  File.write(Louis::PARSED_DATA_FILE, JSON.generate(lookup_table))
 end
 
 task :environment do

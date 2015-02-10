@@ -1,3 +1,5 @@
+require 'json'
+
 require 'louis/const'
 require 'louis/helpers'
 require 'louis/version'
@@ -11,19 +13,13 @@ module Louis
   # @param [String] mac
   # @return [Array<Hash<String=>Object>>]
   def self.find_matches(mac)
-    @lookup_table.select { |m| mac_matches_prefix?(mac, m['prefix'], m['mask']) }
+    lookup_table.select { |m| mac_matches_prefix?(mac, m['prefix'], m['mask']) }
   end
 
   # Loads the lookup table, parsing out the uncommented non-blank lines into
   # objects we can compare MACs against to find their vendor.
-  def self.load_lookup_table
-    @lookup_table ||= []
-    return unless @lookup_table.empty?
-
-    File.open(ORIGINAL_OUI_FILE).each_line do |line|
-      res = line_parser(line)
-      @lookup_table.push(res) if res
-    end
+  def self.lookup_table
+    @lookup_table ||= JSON.parse(File.read(Louis::PARSED_DATA_FILE))
   end
 
   # Returns the name of the vendor that has the most specific prefix
@@ -32,8 +28,6 @@ module Louis
   # @param [String] mac
   # @return [String]
   def self.lookup(mac)
-    load_lookup_table
-
     o = find_matches(mac).sort_by { |m| m['prefix'] }.first
     o ||= {'long_vendor' => 'Unknown', 'short_vendor' => 'Unknown'}
 
