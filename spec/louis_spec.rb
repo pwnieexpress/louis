@@ -37,7 +37,7 @@ RSpec.describe Louis do
     end
 
     it 'should have both the long vendor and short vendor' do
-      expect(Louis.lookup(base_mac).keys).to eq(['short_vendor', 'long_vendor'])
+      expect(Louis.lookup(base_mac).keys).to eq(['long_vendor', 'short_vendor'])
     end
 
     it 'should be able to identify the short vendor of a full MAC' do

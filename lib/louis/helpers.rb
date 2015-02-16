@@ -21,6 +21,14 @@ module Louis
       mac.gsub(/[:-]/, '')
     end
 
+    # Count the number of bits set in an integer.
+    #
+    # @param [Fixnum] num
+    # @return [Fixnum]
+    def count_bits(num)
+      num.to_s(2).count('1')
+    end
+
     # Converts a hexidecimal version of a full or partial (prefix) MAC address
     # into it's integer representation.
     #
@@ -39,11 +47,14 @@ module Louis
       return unless (matches = OUI_FORMAT_REGEX.match(line))
       result = Hash[matches.names.zip(matches.captures)]
 
+      mask = calculate_mask(result['prefix'], result['mask'])
+      prefix = mac_to_num(result['prefix']) & mask
+
       {
-        'mask'         => calculate_mask(result['prefix'], result['mask']),
-        'prefix'       => mac_to_num(result['prefix']),
-        'short_vendor' => result['short_vendor'],
-        'long_vendor'  => result['long_vendor']
+        'mask'         => count_bits(mask),
+        'prefix'       => prefix,
+        'long_vendor'  => result['long_vendor'],
+        'short_vendor' => result['short_vendor']
       }
     end
   end
