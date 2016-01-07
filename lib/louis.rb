@@ -7,6 +7,11 @@ require 'louis/version'
 module Louis
   extend Helpers
 
+  # This masks out both the 'universal/local' bit as well as the
+  # 'unicast/multicast' bit which is the first and second least significant bit
+  # of the first byte in a vendor prefix.
+  IGNORED_BITS_MASK = 0xfcffffffffff
+
   # Loads the lookup table, parsing out the uncommented non-blank lines into
   # objects we can compare MACs against to find their vendor.
   def self.lookup_table
@@ -30,7 +35,7 @@ module Louis
     match = nil
 
     mask_keys.each do |mask|
-      prefix = mac_to_num(mac) & calculate_mask(nil, mask)
+      prefix = mac_to_num(mac) & IGNORED_BITS_MASK & calculate_mask(nil, mask)
       match = lookup_table[mask.to_s][prefix.to_s]
 
       break if match

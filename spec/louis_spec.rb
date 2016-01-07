@@ -31,6 +31,8 @@ RSpec.describe Louis do
     let(:base_mac) { '00:12:34:00:00:00' }
     let(:partial_mac) { '3c:97:0e' }
     let(:unknown_mac) { 'c5:00:00:00:00:00' }
+    let(:local_mac)     { '3e:97:0e' }
+    let(:multicast_mac) { '3d:97:0e' }
 
     it 'should return a hash' do
       expect(Louis.lookup(base_mac)).to be_a(Hash)
@@ -54,6 +56,14 @@ RSpec.describe Louis do
 
     it 'should be able to identify the long vendor of a patrial MAC' do
       expect(Louis.lookup(partial_mac)['long_vendor']).to eq('Wistron InfoComm(Kunshan)Co.,Ltd.')
+    end
+
+    it 'should drop the local bit when performing a lookup' do
+      expect(Louis.lookup(local_mac)['short_vendor']).to eq('WistronI')
+    end
+
+    it 'should drop the multicast bit when performing a lookup' do
+      expect(Louis.lookup(multicast_mac)['short_vendor']).to eq('WistronI')
     end
 
     it 'should return "Unknown" as the short vendor string for unknown MAC prefixes' do
