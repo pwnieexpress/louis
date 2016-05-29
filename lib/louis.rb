@@ -33,9 +33,10 @@ module Louis
   # @return [String]
   def self.lookup(mac)
     match = nil
+    encoded_mac = mac_to_num(mac) & IGNORED_BITS_MASK
 
     mask_keys.each do |mask|
-      prefix = mac_to_num(mac) & IGNORED_BITS_MASK & calculate_mask(nil, mask)
+      prefix = encoded_mac & calculate_mask(nil, mask)
       match = lookup_table[mask.to_s][prefix.to_s]
 
       break if match
