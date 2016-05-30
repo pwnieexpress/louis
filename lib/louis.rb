@@ -34,9 +34,8 @@ module Louis
   def self.lookup(mac)
     encoded_mac = mac_to_num(mac) & IGNORED_BITS_MASK
 
-    lookup_table.keys.each do |mask|
+    lookup_table.each do |mask, table|
       prefix = (encoded_mac & calculate_mask(nil, mask)).to_s
-      table = lookup_table[mask.to_s]
       if table.include?(prefix)
         vendor = table[prefix]
         return {'long_vendor' => vendor['l'], 'short_vendor' => vendor['s']}
