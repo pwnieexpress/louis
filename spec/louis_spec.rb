@@ -74,4 +74,10 @@ RSpec.describe Louis do
       expect(Louis.lookup(unknown_mac)['long_vendor']).to eq('Unknown')
     end
   end
+
+  describe '#mask_keys' do
+    it 'should return a list of integers: [48, 45, 44, 40, 36, 32, 28, 25, 24, 16]' do
+      expect(Louis.mask_keys).to eq([48, 45, 44, 40, 36, 32, 28, 25, 24, 16])
+    end
+  end
 end
