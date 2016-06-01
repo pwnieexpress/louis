@@ -5,11 +5,11 @@ RSpec.describe Louis do
     expect(Louis::VERSION).not_to be nil
   end
 
-  it "it should have it's source data file" do
+  it "it should have its source data file" do
     expect(File.readable?(Louis::ORIGINAL_OUI_FILE)).to be(true)
   end
 
-  it "it should have it's parsed data file" do
+  it "it should have its parsed data file" do
     expect(File.readable?(Louis::PARSED_DATA_FILE)).to be(true)
   end
 
@@ -72,6 +72,12 @@ RSpec.describe Louis do
 
     it 'should return "Unknown" as the long vendor string for unknown MAC prefixes' do
       expect(Louis.lookup(unknown_mac)['long_vendor']).to eq('Unknown')
+    end
+  end
+
+  describe '#mask_keys' do
+    it 'should return a list of integers: [48, 45, 44, 40, 36, 32, 28, 25, 24, 16]' do
+      expect(Louis.mask_keys).to eq([48, 45, 44, 40, 36, 32, 28, 25, 24, 16])
     end
   end
 end

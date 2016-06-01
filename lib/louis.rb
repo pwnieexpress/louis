@@ -32,19 +32,16 @@ module Louis
   # @param [String] mac
   # @return [String]
   def self.lookup(mac)
-    match = nil
+    encoded_mac = mac_to_num(mac) & IGNORED_BITS_MASK
 
-    mask_keys.each do |mask|
-      prefix = mac_to_num(mac) & IGNORED_BITS_MASK & calculate_mask(nil, mask)
-      match = lookup_table[mask.to_s][prefix.to_s]
-
-      break if match
+    lookup_table.each do |mask, table|
+      prefix = (encoded_mac & calculate_mask(nil, mask)).to_s
+      if table.include?(prefix)
+        vendor = table[prefix]
+        return {'long_vendor' => vendor['l'], 'short_vendor' => vendor['s']}
+      end
     end
-
-    if match
-      {'long_vendor' => match['l'], 'short_vendor' => match['s']}
-    else
-      {'long_vendor' => 'Unknown', 'short_vendor' => 'Unknown'}
-    end
+    
+    {'long_vendor' => 'Unknown', 'short_vendor' => 'Unknown'}
   end
 end
