@@ -41,7 +41,7 @@ module Louis
         return {'long_vendor' => vendor['l'], 'short_vendor' => vendor['s']}
       end
     end
-    
+
     {'long_vendor' => 'Unknown', 'short_vendor' => 'Unknown'}
   end
 end
