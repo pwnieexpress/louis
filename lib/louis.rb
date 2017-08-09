@@ -32,16 +32,26 @@ module Louis
   # @param [String] mac
   # @return [String]
   def self.lookup(mac)
-    encoded_mac = mac_to_num(mac) & IGNORED_BITS_MASK
+    numeric_mac = mac_to_num(mac)
+    masked_mac = numeric_mac & IGNORED_BITS_MASK
 
-    lookup_table.each do |mask, table|
-      prefix = (encoded_mac & calculate_mask(nil, mask)).to_s
-      if table.include?(prefix)
-        vendor = table[prefix]
-        return {'long_vendor' => vendor['l'], 'short_vendor' => vendor['s']}
-      end
-    end
+    vendor = search_table(masked_mac)
+    return {'long_vendor' => vendor['l'], 'short_vendor' => vendor['s']} if vendor
+
+    # Try again, but this time don't ignore any bits (Looking at you
+    # Google... with your 'da' prefix...)
+    vendor = search_table(numeric_mac)
+    return {'long_vendor' => vendor['l'], 'short_vendor' => vendor['s']} if vendor
 
     {'long_vendor' => 'Unknown', 'short_vendor' => 'Unknown'}
+  end
+
+  def self.search_table(encoded_mac)
+    lookup_table.each do |mask, table|
+      prefix = (encoded_mac & calculate_mask(nil, mask)).to_s
+      return table[prefix] if table.include?(prefix)
+    end
+
+    nil
   end
 end
