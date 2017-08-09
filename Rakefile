@@ -1,4 +1,4 @@
-require "bundler/gem_tasks"
+require 'bundler/gem_tasks'
 
 begin
   require 'rspec/core/rake_task'
@@ -6,6 +6,19 @@ begin
   task :default => :spec
 rescue LoadError
   # no rspec available
+end
+
+desc "Download the latest copy of the wireshark manufacturer's database"
+task :update_wireshark => [:environment] do
+  require 'net/http'
+
+  begin
+    new_file = Net::HTTP.get(URI('https://code.wireshark.org/review/gitweb?p=wireshark.git;a=blob_plain;f=manuf'))
+    File.write(Louis::ORIGINAL_OUI_FILE, new_file)
+    puts 'Update complete'
+  rescue => err
+    puts "An error occurred while downloading the file: #{err.class} -> #{err.message}"
+  end
 end
 
 desc "Pre-parse the source file into the parsed file"
