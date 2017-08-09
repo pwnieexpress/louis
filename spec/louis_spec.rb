@@ -75,9 +75,12 @@ RSpec.describe Louis do
     end
   end
 
+  # For future reference, these may change and are depedent on the
+  # specifications in the data file. This of these as the slash-suffixes that
+  # describe a network /24 for example.
   describe '#mask_keys' do
-    it 'should return a list of integers: [48, 45, 44, 40, 36, 32, 28, 25, 24, 16]' do
-      expect(Louis.mask_keys).to eq([48, 45, 44, 40, 36, 32, 28, 25, 24, 16])
+    it 'should return a list of integers: [36, 28, 24]' do
+      expect(Louis.mask_keys).to eq([36, 28, 24])
     end
   end
 end
