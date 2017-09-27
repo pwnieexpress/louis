@@ -14,16 +14,14 @@ module Louis
 
   # Loads the lookup table, parsing out the uncommented non-blank lines into
   # objects we can compare MACs against to find their vendor.
-  def self.lookup_table
-    @lookup_table ||= JSON.parse(File.read(Louis::PARSED_DATA_FILE))
-  end
+  LOOKUP_TABLE = JSON.parse(File.read(Louis::PARSED_DATA_FILE))
 
   # Collect the recorded mask and order it appropriately from most specific to
   # least.
   #
   # @param [Array<Fixnum>]
   def self.mask_keys
-    @mask_keys ||= lookup_table.keys.map(&:to_i).sort.reverse
+    @mask_keys ||= LOOKUP_TABLE.keys.map(&:to_i).sort.reverse
   end
 
   # Returns the name of the vendor that has the most specific prefix
@@ -47,7 +45,7 @@ module Louis
   end
 
   def self.search_table(encoded_mac)
-    lookup_table.each do |mask, table|
+    LOOKUP_TABLE.each do |mask, table|
       prefix = (encoded_mac & calculate_mask(nil, mask)).to_s
       return table[prefix] if table.include?(prefix)
     end
