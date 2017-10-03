@@ -45,11 +45,11 @@ module Louis
   end
 
   def self.search_table(encoded_mac)
-    LOOKUP_TABLE.each do |mask, table|
+    mask_keys.each{|mask|
+      table = LOOKUP_TABLE[mask.to_s]
       prefix = (encoded_mac & calculate_mask(nil, mask)).to_s
       return table[prefix] if table.include?(prefix)
-    end
-
+    }
     nil
   end
 end
