@@ -33,6 +33,9 @@ RSpec.describe Louis do
     let(:unknown_mac) { 'c5:00:00:00:00:00' }
     let(:local_mac)     { '3e:97:0e' }
     let(:multicast_mac) { '3d:97:0e' }
+    let(:multi_match_mac) { 'E4:95:6E:40:00:00'}
+    let(:most_specific_match) { 'Guang Lian Zhi Tong Technology Limited'}
+    let(:least_specific_match) { 'IEEE Registration Authority'}
 
     it 'should return a hash' do
       expect(Louis.lookup(base_mac)).to be_a(Hash)
@@ -72,6 +75,11 @@ RSpec.describe Louis do
 
     it 'should return "Unknown" as the long vendor string for unknown MAC prefixes' do
       expect(Louis.lookup(unknown_mac)['long_vendor']).to eq('Unknown')
+    end
+
+    it 'should return the most specific vendor match for MAC prefixes that match multiple mask keys' do
+      expect(Louis.lookup(multi_match_mac)['long_vendor']).to_not eq(least_specific_match)
+      expect(Louis.lookup(multi_match_mac)['long_vendor']).to eq(most_specific_match)
     end
   end
 
